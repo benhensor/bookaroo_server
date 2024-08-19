@@ -1,15 +1,14 @@
 const express = require('express');
 const cors = require('cors');
-const dotenv = require('dotenv');
-const { sequelize } = require('./config/database.js');
-require('./models/Task.js');
+const sequelize = require('./config/database.js');
+const Task = require('./models/Task.js');
 
 dotenv.config();
 
 const app = express();
 
 const corsOptions = {
-  origin: process.env.FRONTEND_URL.trim(),
+  origin: process.env.FRONTEND_URL,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -19,17 +18,18 @@ app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 app.use(express.json());
 
+console.log('Sequelize instance:', sequelize);
+
 // Test database connection
 sequelize.authenticate()
-  .then(() => console.log('Database connected.'))
+  .then(() => console.log('Database connected successfully.'))
   .catch(err => {
     console.error('Unable to connect to the database:', err);
-    // Log full error details
-    console.error(JSON.stringify(err, null, 2));
+    console.error('Full error details:', JSON.stringify(err, null, 2));
   });
 
 // Sync all models
-sequelize.sync()
+sequelize.sync({ alter: true})
   .then(() => console.log('Database & tables created!'))
   .catch(err => console.error('Error syncing database:', err));
 
