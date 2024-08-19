@@ -1,8 +1,8 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import sequelize from './config/database.js';
-import Task from './models/Task.js';
+const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const { sequelize } = require('./config/database.js');
+require('./models/Task.js');
 
 dotenv.config();
 
@@ -93,4 +93,4 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-export default app;
+module.exports = app;
