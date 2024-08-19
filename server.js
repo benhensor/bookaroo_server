@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import sequelize from './config/database.js';
+import authRoutes from './routes/authRoutes.js';
 import Task from './models/Task.js';
 
 dotenv.config();
@@ -33,6 +34,10 @@ sequelize.authenticate()
 sequelize.sync({ alterTable: true })  
   .then(() => console.log('Database & tables created!'))
   .catch(err => console.error('Error syncing database:', err));
+
+
+// Routes
+app.use('/api/auth', authRoutes);
 
 
 app.get('/api/test', (req, res) => {
