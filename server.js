@@ -33,6 +33,11 @@ sequelize.sync()
   .then(() => console.log('Database & tables created!'))
   .catch(err => console.error('Error syncing database:', err));
 
+
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'Server is running' });
+});
+
 // CRUD routes for Tasks
 app.post('/api/tasks', async (req, res) => {
   try {
