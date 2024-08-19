@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: process.env.FRONTEND_URL.trim(),
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -25,7 +25,8 @@ sequelize.authenticate()
 
 // Sync all models
 sequelize.sync()
-  .then(() => console.log('Database & tables created!'));
+  .then(() => console.log('Database & tables created!'))
+  .catch(err => console.error('Error syncing database:', err));
 
 // CRUD routes for Tasks
 app.post('/api/tasks', async (req, res) => {
