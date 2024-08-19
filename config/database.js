@@ -1,6 +1,6 @@
-const { Sequelize } = require('sequelize');
-const dotenv = require('dotenv');
-const pg = require('pg');
+import { Sequelize } from 'sequelize';
+import pg from 'pg';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -14,7 +14,7 @@ console.log('Initializing Sequelize with the following configuration:', {
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
-  dialectModule: pg,  // Explicitly passing the pg module
+  dialectModule: pg,
   dialect: 'postgres',
   dialectOptions: {
     ssl: {
@@ -30,4 +30,4 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
   },
 });
 
-module.exports = sequelize;
+export default sequelize;

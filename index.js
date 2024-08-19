@@ -1,8 +1,8 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const cors = require('cors');
-const sequelize = require('./config/database.js');
-const Task = require('./models/Task.js');
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import sequelize from './config/database.js';
+import Task from './models/Task.js';
 
 dotenv.config();
 
@@ -19,8 +19,6 @@ app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 app.use(express.json());
 
-console.log('Sequelize instance:', sequelize);
-
 // Test database connection
 sequelize.authenticate()
   .then(() => console.log('Database connected successfully.'))
@@ -30,7 +28,7 @@ sequelize.authenticate()
   });
 
 // Sync all models
-sequelize.sync({ alter: true})
+sequelize.sync({ alterTable: true })  
   .then(() => console.log('Database & tables created!'))
   .catch(err => console.error('Error syncing database:', err));
 
@@ -94,4 +92,4 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-module.exports = app;
+export default app;
