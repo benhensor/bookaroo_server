@@ -14,6 +14,10 @@ app.options('*', cors());
 
 app.use(express.json());
 
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'Server is running' });
+});
+
 app.get('/api/tasks', async (req, res) => {
   try {
     await sequelize.authenticate();
