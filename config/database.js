@@ -13,6 +13,7 @@ console.log('Initializing Sequelize with the following configuration:', {
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
+  dialectModule: require('pg'),
   dialect: 'postgres',
   dialectOptions: {
     ssl: {
