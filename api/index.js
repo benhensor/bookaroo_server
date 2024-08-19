@@ -7,8 +7,10 @@ const app = express();
 
 app.use(cors({
   origin: 'https://bookaroo-frontend.vercel.app',  // Replace with your frontend URL
-  credentials: true,
+
 }));
+
+app.options('*', cors());
 
 app.use(express.json());
 
