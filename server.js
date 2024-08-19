@@ -16,12 +16,17 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(express.json());
 
 // Test database connection
 sequelize.authenticate()
   .then(() => console.log('Database connected.'))
-  .catch(err => console.error('Unable to connect to the database:', err));
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+    // Log full error details
+    console.error(JSON.stringify(err, null, 2));
+  });
 
 // Sync all models
 sequelize.sync()
@@ -43,6 +48,9 @@ app.get('/api/tasks', async (req, res) => {
     const tasks = await Task.findAll();
     res.json(tasks);
   } catch (error) {
+    console.error('Error fetching tasks:', error);
+    // Log full error details
+    console.error(JSON.stringify(error, null, 2));
     res.status(500).json({ error: error.message });
   }
 });
