@@ -9,7 +9,7 @@ dotenv.config()
 
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{6,20}$/
 
-const registerSchema = yup.object().shape({
+const registrationSchema = yup.object().shape({
   email: yup
     .string()
     .email('Please enter a valid email')
@@ -46,7 +46,8 @@ export const register = async (req, res) => {
 	} = req.body
 	
 	try {
-		await registerSchema.validate({
+		
+		await registrationSchema.validate({
 			email,
 			username,
 			postcode,
@@ -81,21 +82,53 @@ export const register = async (req, res) => {
 	}
 }
 
+
+const loginSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email('Please enter a valid email')
+    .required('Email is required'),
+  password: yup
+    .string()
+    .required('Password is required'),
+});
+
 export const login = async (req, res) => {
-	const { username, password } = req.body
+
+	console.log('login called', req.body)
+	const { email, password } = req.body
+
 	try {
-		const user = await User.findOne({ where: { username } })
+
+		await loginSchema.validate({
+			email,
+			password,
+		})
+
+		const user = await User.findOne({ where: { email } })
 		if (!user) return res.status(404).json({ error: 'User not found' })
 
 		const isMatch = await bcrypt.compare(password, user.password)
 		if (!isMatch)
 			return res.status(400).json({ error: 'Invalid credentials' })
 
-		const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-			expiresIn: '24h',
+		const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '24h' });
+
+		res.cookie('authToken', token, {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === 'production',
+			maxAge: 24 * 60 * 60 * 1000,
 		})
-		res.json({ token, user })
+
+		console.log('user:', user)
+		console.log('token:', token)
+		res.json({ user })
+
 	} catch (error) {
-		res.status(500).json({ error: error.message })
+		if (error instanceof yup.ValidationError) {
+			return res.status(400).json({ error: error.message })
+		} else {
+			return res.status(500).json({ error: error.message })
+		}
 	}
 }

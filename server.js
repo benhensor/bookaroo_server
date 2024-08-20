@@ -1,8 +1,12 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import sequelize from './config/database.js';
 import authRoutes from './routes/authRoutes.js';
+import usersRoutes from './routes/usersRoutes.js';
+import booksRoutes from './routes/booksRoutes.js';
+import messagesRoutes from './routes/messagesRoutes.js';
 import Task from './models/Task.js';
 
 dotenv.config();
@@ -12,13 +16,14 @@ const app = express();
 const corsOptions = {
   origin: process.env.FRONTEND_URL,
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -38,6 +43,9 @@ sequelize.sync({ alterTable: true })
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/users', usersRoutes);
+app.use('/api/books', booksRoutes);
+app.use('/api/messages', messagesRoutes);
 
 
 app.get('/api/test', (req, res) => {
