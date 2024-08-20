@@ -7,17 +7,22 @@ const User = sequelize.define('User', {
 			primaryKey: true,
 			autoIncrement: true,
 		},
+		email: {
+			type: DataTypes.STRING(100),
+			allowNull: false,
+			unique: true,
+		},
 		username: {
+			type: DataTypes.STRING(50),
+			allowNull: true,
+		},
+		postcode: {
 			type: DataTypes.STRING(50),
 			allowNull: true,
 		},
 		password: {
 			type: DataTypes.STRING(120),
 			allowNull: false, 
-		},
-		location: {
-			type: DataTypes.STRING(50),
-			allowNull: true,
 		},
 		latitude: {
 			type: DataTypes.FLOAT,
