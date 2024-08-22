@@ -185,47 +185,43 @@ export const unlikeBook = async (req, res) => {
 }
 
 export const getLikedBooks = async (req, res) => {
+	console.log('Fetching liked books for user:', req.user.id);
 	try {
-		const userId = req.user.id
+		const userId = req.user.id;
 
-		const user = await User.findByPk(userId)
+		// Fetch the user and include the likedBooks array
+		const user = await User.findByPk(userId);
 
-		if (!user || !user.likedBooks || user.likedBooks.length === 0) {
-			return res
-				.status(404)
-				.json({ message: 'User or liked books not found' })
+		// Check if the user or their likedBooks array is not found
+		if (!user) {
+			return res.status(404).json({ message: 'User not found' });
 		}
 
+		if (!user.likedBooks || user.likedBooks.length === 0) {
+			// Return an empty array if there are no liked books
+			return res.status(200).json([]);
+		}
+
+		// Fetch the books that are liked by the user
 		const books = await Book.findAll({
 			where: {
 				id: {
-					[Op.in]: user.likedBooks,
+					[Op.in]: user.likedBooks, // Match book IDs in the user's likedBooks array
 				},
 			},
-			include: {
-				model: User,
-				as: 'user', // This should match the association alias in your models
-				attributes: [
-					'id',
-					'username',
-					'email',
-					'phone',
-					'addressLine1',
-					'addressLine2',
-					'city',
-					'postcode',
-					'latitude',
-					'longitude',
-				],
-			},
-		})
+		});
 
-		res.status(200).json(books)
+		// Return the found books with a 200 status code
+		console.log('Liked books:', books);
+		return res.status(200).json(books);
 	} catch (error) {
-		console.error('Error fetching liked books:', error)
-		res.status(500).json({ error: 'Internal server error' })
+		console.error('Error fetching liked books:', error);
+		// Return a 500 status code with an error message
+		return res.status(500).json({ error: 'Internal server error' });
 	}
-}
+};
+
+
 
 export const updatePreferences = async (req, res) => {
 	const { preferences } = req.body

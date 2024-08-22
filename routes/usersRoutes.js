@@ -14,12 +14,12 @@ import { verifyToken } from '../middleware/verifyToken.js'
 const router = Router()
 
 router.get('/current', verifyToken, getUserDetails)
-router.get('/:id', verifyToken, getUserById)
 router.get('/search', verifyToken, searchUsers)
 router.put('/update', verifyToken, updateUserDetails)
 router.put('/like', verifyToken, likeBook)
 router.put('/unlike', verifyToken, unlikeBook)
 router.get('/liked', verifyToken, getLikedBooks)
 router.put('/preferences', verifyToken, updatePreferences)
+router.get('/:id', verifyToken, getUserById)
 
 export default router

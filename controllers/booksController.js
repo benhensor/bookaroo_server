@@ -103,18 +103,6 @@ export const getRecommendations = async (req, res) => {
 					),
 				},
 			},
-			include: {
-				model: User,
-				as: 'user',
-				attributes: [
-					'id',
-					'email',
-					'username',
-					'postcode',
-					'latitude',
-					'longitude',
-				],
-			},
 			raw: true,
 			nest: true,
 		})
@@ -127,18 +115,14 @@ export const getRecommendations = async (req, res) => {
 
 export const getAllBooks = async (req, res) => {
 	try {
-		const { ids } = req.query // Get the `ids` query parameter
+		// const { ids } = req.query // Get the `ids` query parameter
 
 		// If `ids` is provided, filter by those book IDs
-		const whereClause = ids
-			? { id: { [Op.in]: ids.split(',').map((id) => parseInt(id, 10)) } }
-			: {} // If `ids` is not provided, fetch all books
+		// const whereClause = ids
+		// 	? { id: { [Op.in]: ids.split(',').map((id) => parseInt(id, 10)) } }
+		// 	: {} // If `ids` is not provided, fetch all books
 
-		const books = await Book.findAll({
-			where: whereClause,
-			raw: true,
-			nest: true,
-		})
+		const books = await Book.findAll()
 
 		res.status(200).json(books)
 	} catch (error) {
