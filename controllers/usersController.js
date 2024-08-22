@@ -4,6 +4,7 @@ import { Op } from 'sequelize'
 import axios from 'axios'
 
 export const getUserDetails = async (req, res) => {
+	console.log('getUserDetails:', req.user)
 	try {
 		// Ensure that the user information is correctly set by the middleware
 		if (!req.user || !req.user.id) {
@@ -25,6 +26,27 @@ export const getUserDetails = async (req, res) => {
 	}
 }
 
+
+export const getUserById = async (req, res) => {
+	const { userId } = req.params
+	try {
+		const user = await User.findByPk(userId, {
+			attributes: { exclude: ['password'] },
+		})
+
+		if (!user) {
+			return res.status(404).json({ error: 'User not found' })
+		}
+
+		res.json(user)
+	} catch (error) {
+		console.error('Error fetching user by ID:', error)
+		res.status(500).json({ error: 'Internal server error' })
+	}
+}
+
+
+
 export const searchUsers = async (req, res) => {
 	const { userId } = req.query
 	try {
@@ -34,12 +56,8 @@ export const searchUsers = async (req, res) => {
 			},
 			attributes: [
 				'id',
-				'username',
 				'email',
-				'phone',
-				'addressLine1',
-				'addressLine2',
-				'city',
+				'username',
 				'postcode',
 				'latitude',
 				'longitude',
@@ -50,7 +68,7 @@ export const searchUsers = async (req, res) => {
 		console.error('Error searching for users:', error)
 		res.status(500).json({ error: 'Internal server error' })
 	}
-}
+} 
 
 export const updateUserDetails = async (req, res) => {
 	const {

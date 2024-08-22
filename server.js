@@ -7,6 +7,7 @@ import authRoutes from './routes/authRoutes.js';
 import usersRoutes from './routes/usersRoutes.js';
 import booksRoutes from './routes/booksRoutes.js';
 import messagesRoutes from './routes/messagesRoutes.js';
+import './models/index.js';
 import Task from './models/Task.js';
 
 dotenv.config();

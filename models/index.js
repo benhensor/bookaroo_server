@@ -17,9 +17,9 @@ Book.hasMany(Message, { as: 'messages', foreignKey: 'bookId' })
 Message.belongsTo(User, { as: 'recipient', foreignKey: 'recipientId' })
 Message.belongsTo(User, { as: 'sender', foreignKey: 'senderId' })
 Message.belongsTo(Book, { as: 'book', foreignKey: 'bookId' })
-Message.belongsTo(Message, { as: 'parentMessage', foreignKey: 'parentMessageId' })
+
 
 
 const db = { User, Book, Message, sequelize }
 
-export default db
+export default db 

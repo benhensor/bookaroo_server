@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import {
 	getUserDetails,
+	getUserById,
 	searchUsers,
 	updateUserDetails,
 	likeBook,
@@ -13,6 +14,7 @@ import { verifyToken } from '../middleware/verifyToken.js'
 const router = Router()
 
 router.get('/current', verifyToken, getUserDetails)
+router.get('/:id', verifyToken, getUserById)
 router.get('/search', verifyToken, searchUsers)
 router.put('/update', verifyToken, updateUserDetails)
 router.put('/like', verifyToken, likeBook)

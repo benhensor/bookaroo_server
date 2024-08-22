@@ -3,7 +3,7 @@ import User from '../models/User.js'
 import Book from '../models/Book.js'
 import { Op } from 'sequelize'
 
-export const listBook = async (req, res) => {
+export const createNewListing = async (req, res) => {
 	const {
 		isbn,
 		coverImg,
@@ -18,6 +18,12 @@ export const listBook = async (req, res) => {
 	} = req.body
 	console.log('Book data:', req.body)
 	try {
+
+		const user = await User.findByPk(userId)
+		if (!user) {
+			return res.status(404).json({ error: 'User not found' })
+		}
+
 		const newBook = await Book.create({
 			isbn,
 			coverImg,
@@ -29,6 +35,8 @@ export const listBook = async (req, res) => {
 			condition,
 			notes,
 			userId,
+			bookLatitude: user.latitude,
+			bookLongitude: user.longitude,
 		})
 		res.status(201).json(newBook)
 	} catch (error) {
@@ -60,12 +68,8 @@ export const getListedBooks = async (req, res) => {
 				as: 'user',
 				attributes: [
 					'id',
-					'username',
 					'email',
-					'phone',
-					'addressLine1',
-					'addressLine2',
-					'city',
+					'username',
 					'postcode',
 					'latitude',
 					'longitude',
@@ -104,12 +108,8 @@ export const getRecommendations = async (req, res) => {
 				as: 'user',
 				attributes: [
 					'id',
-					'username',
 					'email',
-					'phone',
-					'addressLine1',
-					'addressLine2',
-					'city',
+					'username',
 					'postcode',
 					'latitude',
 					'longitude',
@@ -136,22 +136,6 @@ export const getAllBooks = async (req, res) => {
 
 		const books = await Book.findAll({
 			where: whereClause,
-			include: {
-				model: User,
-				as: 'user',
-				attributes: [
-					'id',
-					'username',
-					'email',
-					'phone',
-					'addressLine1',
-					'addressLine2',
-					'city',
-					'postcode',
-					'latitude',
-					'longitude',
-				],
-			},
 			raw: true,
 			nest: true,
 		})

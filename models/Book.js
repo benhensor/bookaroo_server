@@ -58,6 +58,16 @@ const Book = sequelize.define(
 				key: 'id',
 			},
 		},
+		bookLatitude: {
+			type: DataTypes.DOUBLE,
+			allowNull: true,
+			field: 'book_latitude',
+		},
+		bookLongitude: {
+			type: DataTypes.DOUBLE,
+			allowNull: true,
+			field: 'book_longitude',
+		},
 	},
 	{
 		tableName: 'books',
