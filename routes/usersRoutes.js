@@ -20,6 +20,6 @@ router.put('/like', verifyToken, likeBook)
 router.put('/unlike', verifyToken, unlikeBook)
 router.get('/liked', verifyToken, getLikedBooks)
 router.put('/preferences', verifyToken, updatePreferences)
-router.get('/:id', verifyToken, getUserById)
+router.get('/:userId', verifyToken, getUserById)
 
 export default router

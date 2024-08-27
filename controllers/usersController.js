@@ -28,18 +28,21 @@ export const getUserDetails = async (req, res) => {
 
 
 export const getUserById = async (req, res) => {
+	console.log('getUserById:', req.params)
 	const { userId } = req.params
+	console.log('userId:', userId)
 	try {
 		const user = await User.findByPk(userId, {
 			attributes: { exclude: ['password'] },
 		})
+		console.log('user:', user)
 
 		if (!user) {
 			return res.status(404).json({ error: 'User not found' })
 		}
-
 		res.json(user)
 	} catch (error) {
+		console.log('error:', req.params)
 		console.error('Error fetching user by ID:', error)
 		res.status(500).json({ error: 'Internal server error' })
 	}
@@ -185,7 +188,6 @@ export const unlikeBook = async (req, res) => {
 }
 
 export const getLikedBooks = async (req, res) => {
-	console.log('Fetching liked books for user:', req.user.id);
 	try {
 		const userId = req.user.id;
 
@@ -212,7 +214,6 @@ export const getLikedBooks = async (req, res) => {
 		});
 
 		// Return the found books with a 200 status code
-		console.log('Liked books:', books);
 		return res.status(200).json(books);
 	} catch (error) {
 		console.error('Error fetching liked books:', error);
