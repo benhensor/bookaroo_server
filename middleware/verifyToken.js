@@ -3,18 +3,22 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
+
+
 export const verifyToken = (req, res, next) => {
   const token = req.cookies.authToken;
   if (!token) {
-    return res.status(401).json({ error: 'Unauthorized' })
+    console.log('Token missing');
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 
   try {
-    const verified = jwt.verify(token, process.env.JWT_SECRET)
-    req.user = verified
-    console.log('Verified:', verified)
-    next()
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = verified;
+    console.log('Token verified successfully:', verified);
+    next();
   } catch (error) {
-    return res.status(401).json({ error: 'Unauthorized' })
+    console.log('Token verification failed:', error.message);
+    return res.status(401).json({ error: 'Unauthorized' });
   }
-}
+};
