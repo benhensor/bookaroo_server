@@ -14,7 +14,7 @@ dotenv.config()
 const app = express()
 
 const corsOptions = {
-	origin: process.env.FRONTEND_URL || 'https://bookaroo-frontend.vercel.app/',
+	origin: process.env.FRONTEND_URL || 'https://bookaroo-frontend.vercel.app',
 	credentials: true,
 	methods: ['GET', 'POST', 'PUT', 'DELETE'],
 	allowedHeaders: ['Content-Type', 'Authorization'],
