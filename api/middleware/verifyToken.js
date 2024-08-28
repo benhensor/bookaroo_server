@@ -6,6 +6,7 @@ dotenv.config()
 
 
 export const verifyToken = (req, res, next) => {
+  console.log('Request cookies:', req.cookies);  // Log all cookies
   const token = req.cookies.authToken;
   if (!token) {
     console.log('Token missing');
@@ -22,3 +23,4 @@ export const verifyToken = (req, res, next) => {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 };
+
