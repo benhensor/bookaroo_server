@@ -1,7 +1,9 @@
 import { DataTypes } from 'sequelize'
 import sequelize from '../config/database.js'
 
-const User = sequelize.define('User', {
+const User = sequelize.define(
+	'User',
+	{
 		id: {
 			type: DataTypes.BIGINT,
 			primaryKey: true,
@@ -22,7 +24,7 @@ const User = sequelize.define('User', {
 		},
 		password: {
 			type: DataTypes.STRING(120),
-			allowNull: false, 
+			allowNull: false,
 		},
 		latitude: {
 			type: DataTypes.FLOAT,

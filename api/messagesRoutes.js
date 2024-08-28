@@ -1,6 +1,13 @@
 import { Router } from 'express'
-import { getUsersMessages, getAllMessages, sendMessage, markMessageAsRead, markMessageAsUnread, deleteMessage } from '../controllers/messagesController.js'
-import { verifyToken } from '../middleware/verifyToken.js'
+import {
+	getUsersMessages,
+	getAllMessages,
+	sendMessage,
+	markMessageAsRead,
+	markMessageAsUnread,
+	deleteMessage,
+} from './controllers/messagesController.js'
+import { verifyToken } from './middleware/verifyToken.js'
 
 const router = Router()
 

@@ -8,8 +8,8 @@ import {
 	unlikeBook,
 	getLikedBooks,
 	updatePreferences,
-} from '../controllers/usersController.js'
-import { verifyToken } from '../middleware/verifyToken.js'
+} from './controllers/usersController.js'
+import { verifyToken } from './middleware/verifyToken.js'
 
 const router = Router()
 

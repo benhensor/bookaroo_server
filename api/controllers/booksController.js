@@ -18,7 +18,6 @@ export const createNewListing = async (req, res) => {
 	} = req.body
 	console.log('Book data:', req.body)
 	try {
-
 		const user = await User.findByPk(userId)
 		if (!user) {
 			return res.status(404).json({ error: 'User not found' })

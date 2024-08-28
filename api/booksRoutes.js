@@ -1,6 +1,13 @@
 import { Router } from 'express'
-import { createNewListing, getListedBooks, getRecommendations, deleteListing, getAllBooks, searchBooks } from '../controllers/booksController.js'
-import { verifyToken } from '../middleware/verifyToken.js'
+import {
+	createNewListing,
+	getListedBooks,
+	getRecommendations,
+	deleteListing,
+	getAllBooks,
+	searchBooks,
+} from './controllers/booksController.js'
+import { verifyToken } from './middleware/verifyToken.js'
 
 const router = Router()
 

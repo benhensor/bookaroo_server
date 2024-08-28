@@ -3,7 +3,6 @@ import User from './User.js'
 import Book from './Book.js'
 import Message from './Message.js'
 
-
 // User associations
 User.hasMany(Book, { as: 'books', foreignKey: 'userId' })
 User.hasMany(Message, { as: 'sentMessages', foreignKey: 'senderId' })
@@ -18,8 +17,6 @@ Message.belongsTo(User, { as: 'recipient', foreignKey: 'recipientId' })
 Message.belongsTo(User, { as: 'sender', foreignKey: 'senderId' })
 Message.belongsTo(Book, { as: 'book', foreignKey: 'bookId' })
 
-
-
 const db = { User, Book, Message, sequelize }
 
-export default db 
+export default db
