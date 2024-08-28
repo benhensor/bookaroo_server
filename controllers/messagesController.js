@@ -3,10 +3,10 @@ import User from '../models/User.js'
 import Book from '../models/Book.js'
 
 export const getUsersMessages = async (req, res) => {
-	// console.log('getUsersMessages:', req.user)
+	console.log('getUsersMessages:', req.user)
 	try {
 		const userId = req.user.id
-
+		console.log('getUsersMessages:', userId)
 		const messages = await Message.findAll({
 			where: {
 				recipientId: userId,
