@@ -6,8 +6,8 @@ import {
 	deleteListing,
 	getAllBooks,
 	searchBooks,
-} from './controllers/booksController.js'
-import { verifyToken } from './middleware/verifyToken.js'
+} from '../controllers/booksController.js'
+import { verifyToken } from '../middleware/verifyToken.js'
 
 const router = Router()
 

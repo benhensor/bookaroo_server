@@ -4,8 +4,8 @@ import {
 	login,
 	logout,
 	getCurrentUser,
-} from './controllers/authController.js'
-import { verifyToken } from './middleware/verifyToken.js'
+} from '../controllers/authController.js'
+import { verifyToken } from '../middleware/verifyToken.js'
 
 const router = Router()
 

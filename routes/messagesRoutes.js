@@ -6,8 +6,8 @@ import {
 	markMessageAsRead,
 	markMessageAsUnread,
 	deleteMessage,
-} from './controllers/messagesController.js'
-import { verifyToken } from './middleware/verifyToken.js'
+} from '../controllers/messagesController.js'
+import { verifyToken } from '../middleware/verifyToken.js'
 
 const router = Router()
 
