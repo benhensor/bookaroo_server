@@ -77,14 +77,10 @@ export const updateUserDetails = async (req, res) => {
 	const {
 		username,
 		email,
-		phone,
-		addressLine1,
-		addressLine2,
-		city,
 		postcode,
 	} = req.body
 
-	if (!username || !email || !phone || !addressLine1 || !city || !postcode) {
+	if (!username || !email || !postcode) {
 		return res.status(400).json({ error: 'Missing required fields' })
 	}
 
@@ -105,10 +101,6 @@ export const updateUserDetails = async (req, res) => {
 			{
 				username,
 				email,
-				phone,
-				addressLine1,
-				addressLine2,
-				city,
 				postcode,
 				latitude: location[1],
 				longitude: location[0],
