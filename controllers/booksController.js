@@ -16,7 +16,6 @@ export const createNewListing = async (req, res) => {
 		notes,
 		userId,
 	} = req.body
-	console.log('Book data:', req.body)
 	try {
 		const user = await User.findByPk(userId)
 		if (!user) {
@@ -114,13 +113,6 @@ export const getRecommendations = async (req, res) => {
 
 export const getAllBooks = async (req, res) => {
 	try {
-		// const { ids } = req.query // Get the `ids` query parameter
-
-		// If `ids` is provided, filter by those book IDs
-		// const whereClause = ids
-		// 	? { id: { [Op.in]: ids.split(',').map((id) => parseInt(id, 10)) } }
-		// 	: {} // If `ids` is not provided, fetch all books
-
 		const books = await Book.findAll()
 
 		res.status(200).json(books)
@@ -132,7 +124,7 @@ export const getAllBooks = async (req, res) => {
 
 export const searchBooks = async (req, res) => {
 	const { query } = req.query
-	const userId = req.user.id // Assuming you are getting the user ID from authenticated user
+	const userId = req.user.id
 
 	if (!query) {
 		return res.status(400).json({ error: 'Query parameter is required' })

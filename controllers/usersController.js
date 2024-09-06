@@ -4,9 +4,7 @@ import { Op } from 'sequelize'
 import axios from 'axios'
 
 export const getUserDetails = async (req, res) => {
-	console.log('getUserDetails:', req.user)
 	try {
-		// Ensure that the user information is correctly set by the middleware
 		if (!req.user || !req.user.id) {
 			return res.status(400).json({ error: 'User not authenticated' })
 		}
@@ -26,29 +24,22 @@ export const getUserDetails = async (req, res) => {
 	}
 }
 
-
 export const getUserById = async (req, res) => {
-	console.log('getUserById:', req.params)
 	const { userId } = req.params
-	console.log('userId:', userId)
 	try {
 		const user = await User.findByPk(userId, {
 			attributes: { exclude: ['password'] },
 		})
-		console.log('user:', user)
 
 		if (!user) {
 			return res.status(404).json({ error: 'User not found' })
 		}
 		res.json(user)
 	} catch (error) {
-		console.log('error:', req.params)
 		console.error('Error fetching user by ID:', error)
 		res.status(500).json({ error: 'Internal server error' })
 	}
 }
-
-
 
 export const searchUsers = async (req, res) => {
 	const { userId } = req.query
@@ -71,14 +62,10 @@ export const searchUsers = async (req, res) => {
 		console.error('Error searching for users:', error)
 		res.status(500).json({ error: 'Internal server error' })
 	}
-} 
+}
 
 export const updateUserDetails = async (req, res) => {
-	const {
-		username,
-		email,
-		postcode,
-	} = req.body
+	const { username, email, postcode } = req.body
 
 	if (!username || !email || !postcode) {
 		return res.status(400).json({ error: 'Missing required fields' })
@@ -86,7 +73,7 @@ export const updateUserDetails = async (req, res) => {
 
 	try {
 		const response = await axios.get(
-			`https://api.geocodify.com/v2/geocode?api_key=${process.env.GEOCODIFY_API_KEY}&q=${city}`
+			`https://api.geocodify.com/v2/geocode?api_key=${process.env.GEOCODIFY_API_KEY}&q=${postcode}`
 		)
 
 		if (response.data.response.features.length === 0) {
@@ -181,55 +168,43 @@ export const unlikeBook = async (req, res) => {
 
 export const getLikedBooks = async (req, res) => {
 	try {
-		const userId = req.user.id;
+		const userId = req.user.id
 
-		// Fetch the user and include the likedBooks array
-		const user = await User.findByPk(userId);
+		const user = await User.findByPk(userId)
 
-		// Check if the user or their likedBooks array is not found
 		if (!user) {
-			return res.status(404).json({ message: 'User not found' });
+			return res.status(404).json({ message: 'User not found' })
 		}
 
 		if (!user.likedBooks || user.likedBooks.length === 0) {
-			// Return an empty array if there are no liked books
-			return res.status(200).json([]);
+			return res.status(200).json([])
 		}
 
-		// Fetch the books that are liked by the user
 		const books = await Book.findAll({
 			where: {
 				id: {
 					[Op.in]: user.likedBooks, // Match book IDs in the user's likedBooks array
 				},
 			},
-		});
-
-		// Return the found books with a 200 status code
-		return res.status(200).json(books);
+		})
+		return res.status(200).json(books)
 	} catch (error) {
-		console.error('Error fetching liked books:', error);
-		// Return a 500 status code with an error message
-		return res.status(500).json({ error: 'Internal server error' });
+		console.error('Error fetching liked books:', error)
+		return res.status(500).json({ error: 'Internal server error' })
 	}
-};
-
-
+}
 
 export const updatePreferences = async (req, res) => {
 	const { preferences } = req.body
 	const userId = req.user.id
-	console.log('Updating preferences:', userId, preferences)
 	try {
 		const [updatedRows] = await User.update(
 			{ preferences },
 			{ where: { id: userId } }
 		)
 		if (updatedRows === 0) {
-			console.log('No rows updated. User not found:', userId)
 			return res.status(404).json({ message: 'User not found' })
 		}
-		console.log('Preferences updated successfully', preferences)
 		res.status(200).json({
 			message: 'Preferences updated successfully',
 			preferences,

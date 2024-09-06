@@ -6,7 +6,6 @@ dotenv.config()
 
 
 export const verifyToken = (req, res, next) => {
-  console.log('Request cookies:', req.cookies);  // Log all cookies
   const token = req.cookies.authToken;
   if (!token) {
     console.log('Token missing');
@@ -16,7 +15,6 @@ export const verifyToken = (req, res, next) => {
   try {
     const verified = jwt.verify(token, process.env.JWT_SECRET);
     req.user = verified;
-    console.log('Token verified successfully:', verified);
     next();
   } catch (error) {
     console.log('Token verification failed:', error.message);

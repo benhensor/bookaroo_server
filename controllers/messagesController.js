@@ -3,10 +3,8 @@ import User from '../models/User.js'
 import Book from '../models/Book.js'
 
 export const getUsersMessages = async (req, res) => {
-	console.log('getUsersMessages:', req.user)
 	try {
 		const userId = req.user.id
-		console.log('getUsersMessages:', userId)
 		const messages = await Message.findAll({
 			where: {
 				recipientId: userId,
@@ -29,7 +27,7 @@ export const getUsersMessages = async (req, res) => {
 						'id',
 						'isbn',
 						'coverImg',
-						'title', 
+						'title',
 						'author',
 						'publisher',
 						'publishedDate',
@@ -49,9 +47,7 @@ export const getUsersMessages = async (req, res) => {
 	}
 }
 
-
 export const getAllMessages = async (req, res) => {
-	// console.log('getAllMessages:', req.user)
 	try {
 		const messages = await Message.findAll({
 			include: [
@@ -95,12 +91,9 @@ export const getAllMessages = async (req, res) => {
 export const sendMessage = async (req, res) => {
 	try {
 		const { senderId, recipientId, bookId, message } = req.body
-
-		// Validate sender, recipient, and book exist
 		const sender = await User.findByPk(senderId)
 		const recipient = await User.findByPk(recipientId)
 		const book = await Book.findByPk(bookId)
-
 
 		if (!sender || !recipient || !book) {
 			return res
@@ -115,7 +108,6 @@ export const sendMessage = async (req, res) => {
 			message,
 			isRead: false,
 		})
-		console.log('New message:', newMessage)
 		res.status(201).json(newMessage)
 	} catch (error) {
 		console.error('Error sending message:', error)
@@ -160,7 +152,9 @@ export const markMessageAsUnread = async (req, res) => {
 		if (message.recipientId !== req.user.id) {
 			return res
 				.status(403)
-				.json({ error: 'Not authorized to mark this message as unread' })
+				.json({
+					error: 'Not authorized to mark this message as unread',
+				})
 		}
 
 		message.isRead = false
